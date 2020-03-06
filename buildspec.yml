@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR
-      - $(aws ecr get-login ---region $AWS_REGION --no-include-email)
+      - $(aws ecr get-login --region $AWS_REGION --no-include-email)
       - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
       - REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/demo/demo-app-go"
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
@@ -20,3 +20,8 @@ phases:
       - echo Pushing image
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker save $REPOSITORY_URI:$IMAGE_TAG -o docker_image.tar
+
+artifacts:
+  files:
+    - docker_image.tar

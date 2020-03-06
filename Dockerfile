@@ -4,9 +4,10 @@ RUN apk --no-cache add git
 ADD . /src
 ENV GOPROXY=direct
 RUN cd /src && \
-    go build -o app
+    mkdir -p /src/bin && \
+    go build -o ./bin/app
 
 FROM alpine
 WORKDIR /app
-COPY --from=build-env /src/app /app/
-ENTRYPOINT ["/app/app"]
+COPY --from=build-env /src/bin/app /app/bin/
+ENTRYPOINT ["/app/bin/app"]
