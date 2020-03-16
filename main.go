@@ -14,7 +14,7 @@ type server struct{}
 func helloName(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	fmt.Fprintf(w, "{\"person\": \"%v\"}", params["name"])
+	fmt.Fprintf(w, "{\"person_demo\": \"%v\"}", params["name"])
 }
 
 func main() {
